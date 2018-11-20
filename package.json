@@ -1,0 +1,26 @@
+{
+  "name": "react-native-useful-dnd",
+  "version": "0.1.0",
+  "description": "Drag&Drop for React Native",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DmitriyNikolenko/react-native-useful-dnd.git"
+  },
+  "keywords": [
+    "react-native",
+    "component",
+    "dnd",
+    "drag&drop",
+    "draggable"
+  ],
+  "author": "DmitriyNikolenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DmitriyNikolenko/react-native-useful-dnd/issues"
+  },
+  "homepage": "https://github.com/DmitriyNikolenko/react-native-useful-dnd#readme"
+}
