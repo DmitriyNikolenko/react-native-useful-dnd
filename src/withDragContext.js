@@ -25,7 +25,7 @@ export default function withDragContext({ componentType, }) {
 		(props) => (
 			<DragContext.Consumer>
 				{({ dragHandlers, dragState, }) => {
-					const favoriteDragState = selectFavoriteDragState[componentType].(props.id, dragState) || {}
+					const favoriteDragState = selectFavoriteDragState[componentType](props.id, dragState) || {}
 
 					return (
 						<WrappedComponent {...props} {...dragHandlers} {...favoriteDragState} />

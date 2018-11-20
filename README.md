@@ -1,5 +1,6 @@
 # Contents
 * [About](#about)
+* [Demo](#demo)
 * [Installation](#installation)
 * [Usage](#usage)
 * [License](#license)
@@ -7,6 +8,10 @@
 
 # About
 Drag&Drop functionality for React Native. Uses new React Context API. 
+
+# Demo
+
+![dnd](/demo/dnd.gif "D&D")
 
 # Installation
 
@@ -158,5 +163,5 @@ export default class AboutUs extends React.Component {
 MIT
 
 # Changelog
-
+- *0.1.1* - fix bug, add demo gif, add peerDependencies.
 - *0.1.0* - package created.
