@@ -31,9 +31,9 @@ import DragProvider from 'react-native-useful-dnd'
 ```
 
 ## Components
-- DragProvider - provider of drag&drop functionality. Must be higher in the React-tree than Draggable and Droppable components.
+- DragProvider - provider of drag&drop functionality. Must be higher in the React-tree than Draggable and DropZone components.
 - DragProvider.Draggable - draggable wrapper. Required unique id prop.
-- DragProvider.Droppable - drop zone wrapper. Required unique id prop.
+- DragProvider.DropZone - drop zone wrapper. Required unique id prop.
 
 ## DragProvider props
 | prop            | description                             | default                 | type       |
@@ -41,10 +41,10 @@ import DragProvider from 'react-native-useful-dnd'
 | children        | Children node                           | undefined               | React.Node |
 | onDragStart     | Start drag callback                     | undefined               | Function   |
 | onDragMove      | Move Draggable callback                 | undefined               | Function   |
-| onDragEnter     | Enter Draggable to Droppable callback   | undefined               | Function   |
-| onDragLeave     | Leave Draggable to Droppable callback   | undefined               | Function   |
+| onDragEnter     | Enter Draggable to DropZone callback    | undefined               | Function   |
+| onDragLeave     | Leave Draggable to DropZone callback    | undefined               | Function   |
 | onDragEnd       | End of drag callback                    | undefined               | Function   |
-| onDrop          | End of drag over Droppable callback     | undefined               | Function   |
+| onDrop          | End of drag over DropZone callback      | undefined               | Function   |
 
 ## DragProvider.Draggable props
 | prop            | description                             | default                 | type                  |
@@ -56,18 +56,18 @@ import DragProvider from 'react-native-useful-dnd'
 | prop            | description                                   | default             | type                  |
 |-----------------|-----------------------------------------------|---------------------|-----------------------|
 | active          | True when component drag                      | false               | boolean               |
-| allowDrop       | True when Draggable component over Droppable  | false               | boolean               |
+| allowDrop       | True when Draggable component over DropZone   | false               | boolean               |
 
-## DragProvider.Droppable props
+## DragProvider.DropZone props
 | prop            | description                             | default                 | type                  |
 |-----------------|-----------------------------------------|-------------------------|-----------------------|
-| id              | Unique id of Droppable component        | undefined (required)    | string                |
-| children        | Droppable component                     | undefined               | React.Node/Function   |
+| id              | Unique id of DropZone component         | undefined (required)    | string                |
+| children        | DropZone component                      | undefined               | React.Node/Function   |
 
 ## DragProvider.Draggable passing to children props
 | prop            | description                                   | default             | type                  |
 |-----------------|-----------------------------------------------|---------------------|-----------------------|
-| dropOver        | True when Droppable component under Draggable | false               | boolean               |
+| dropOver        | True when DropZone component under Draggable  | false               | boolean               |
 
 ## Example
 
@@ -102,17 +102,17 @@ const DragItem = ({ style, color, drag, dragOver, ...props }) => (
 )
 
 export default class AboutUs extends React.Component {
-	handleDrop = (droppableId, draggableId) => console.log('onDrop', droppableId, draggableId)
+	handleDrop = (DropZoneId, draggableId) => console.log('onDrop', DropZoneId, draggableId)
 
 	handleDragStart = (draggableId) => console.log('handleDragStart', draggableId)
 
 	handleDragMove = (draggableId) => console.log('handleDragMove', draggableId)
 
-	handleDragEnter = (draggableId, droppableId) => console.log('handleDragEnter', draggableId, droppableId)
+	handleDragEnter = (draggableId, DropZoneId) => console.log('handleDragEnter', draggableId, DropZoneId)
 
-	handleDragLeave = (draggableId, droppableId) => console.log('handleDragLeave', draggableId, droppableId)
+	handleDragLeave = (draggableId, DropZoneId) => console.log('handleDragLeave', draggableId, DropZoneId)
 
-	handleDrop = (draggableId, droppableId) => console.log('handleDrop', draggableId, droppableId)
+	handleDrop = (draggableId, DropZoneId) => console.log('handleDrop', draggableId, DropZoneId)
 
 	handleDragEnd = (draggableId) => console.log('handleDragEnd', draggableId)
 
@@ -140,7 +140,7 @@ export default class AboutUs extends React.Component {
 					</DragProvider.Draggable>
 				</View>
 
-				<DragProvider.Droppable id="myDropZone">
+				<DragProvider.DropZone id="myDropZone">
 					{({ dropOver, }) => (
 						<View
 							style={[
@@ -151,7 +151,7 @@ export default class AboutUs extends React.Component {
 							<Text>Dropzone</Text>
 						</View>
 					)}
-				</DragProvider.Droppable>
+				</DragProvider.DropZone>
 
 			</DragProvider>
 		)
@@ -163,5 +163,6 @@ export default class AboutUs extends React.Component {
 MIT
 
 # Changelog
+- *0.1.2* - fix call onDragMove after onDragEnd.
 - *0.1.1* - fix bug, add demo gif, add peerDependencies.
 - *0.1.0* - package created.

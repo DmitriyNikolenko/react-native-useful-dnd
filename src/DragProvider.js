@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DragContext from './DragContext'
 import Draggable from './Draggable'
-import Droppable from './Droppable'
+import DropZone from './DropZone'
 import { findAsync, getMeasureFromRef, isBetween, throttle, } from './helpers'
 
 export default class DragProvider extends React.Component {
 	static Draggable = Draggable
 
-	static Droppable = Droppable
+	static DropZone = DropZone
 
 	static propTypes = {
 		children: PropTypes.node,
@@ -22,11 +22,11 @@ export default class DragProvider extends React.Component {
 	}
 
 	state = {
-		activeDroppableId: undefined,
+		activeDropZoneId: undefined,
 		activeDraggableId: undefined,
 	}
 
-	droppableRefs = []
+	dropZoneRefs = []
 
 	get contextValue() {
 		return {
@@ -35,8 +35,8 @@ export default class DragProvider extends React.Component {
 				callDragStart: this.handleDragStart,
 				callDragMove: this.handleDragMove,
 				callDrop: this.handleDragEnd,
-				registerDroppable: this.registerDroppable,
-				unregisterDroppable: this.unregisterDroppable,
+				registerDropZone: this.registerDropZone,
+				unregisterDropZone: this.unregisterDropZone,
 			},
 		}
 	}
@@ -53,7 +53,7 @@ export default class DragProvider extends React.Component {
 	handleDragMove = async (nativeEvent) => {
 		const { pageX: draggableX, pageY: draggableY, } = nativeEvent
 
-		const activeDroppableId = await findAsync(this.droppableRefs, async ({ id, ref, }) => {
+		const activeDropZoneId = await findAsync(this.dropZoneRefs, async ({ id, ref, }) => {
 			const { pageX, pageY, height, width, } = await getMeasureFromRef(ref)
 
 			if (isBetween(draggableX, pageX, pageX + width) && isBetween(draggableY, pageY, pageY + height))
@@ -61,40 +61,42 @@ export default class DragProvider extends React.Component {
 		})
 
 		this.setState(state => {
-			if (state.activeDroppableId === activeDroppableId)
-				return null
-			else {
-				if (state.activeDroppableId)
-					this.props.onDragLeave && this.props.onDragLeave(state.activeDraggableId, state.activeDroppableId)
+			if (state.activeDraggableId) {
+				this.props.onDragMove && this.onDragMoveThrottled(this.state.activeDraggableId, { x: draggableX, y: draggableY, })
 
-				if (activeDroppableId)
-					this.props.onDragEnter && this.props.onDragEnter(state.activeDraggableId, activeDroppableId)
-
-				return { activeDroppableId, }
-			}
+				if (state.activeDropZoneId !== activeDropZoneId) {
+					if (state.activeDropZoneId)
+					this.props.onDragLeave && this.props.onDragLeave(state.activeDraggableId, state.activeDropZoneId)
+					
+					if (activeDropZoneId)
+					this.props.onDragEnter && this.props.onDragEnter(state.activeDraggableId, activeDropZoneId)
+					
+					return { activeDropZoneId, }
+				}
+			} 
+			return null
 		})
-		this.props.onDragMove && this.onDragMoveThrottled(this.state.activeDraggableId, { x: draggableX, y: draggableY, })
 	}
 
 	handleDragEnd = () => {
-		const { activeDroppableId, activeDraggableId, } = this.state
-		this.setState({ activeDroppableId: undefined, activeDraggableId: undefined, })
+		const { activeDropZoneId, activeDraggableId, } = this.state
+		this.setState({ activeDropZoneId: undefined, activeDraggableId: undefined, })
 
 		this.props.onDragEnd && this.props.onDragEnd(activeDraggableId)
-		if (activeDroppableId)
-			return this.props.onDrop && this.props.onDrop(activeDraggableId, activeDroppableId)
+		if (activeDropZoneId)
+			return this.props.onDrop && this.props.onDrop(activeDraggableId, activeDropZoneId)
 		else
 			return false
 	}
 
-	// Droppable handlers.
+	// DropZone handlers.
 
-	registerDroppable = (id, ref) => {
-		this.droppableRefs.push({ id, ref, })
+	registerDropZone = (id, ref) => {
+		this.dropZoneRefs.push({ id, ref, })
 	}
 
-	unregisterDroppable = (droppableId) => {
-		this.droppableRefs = this.droppableRefs.filter(droppable => droppable.id !== droppableId)
+	unregisterDropZone = (DropZoneId) => {
+		this.dropZoneRefs = this.dropZoneRefs.filter(DropZone => DropZone.id !== DropZoneId)
 	}
 
 	// Render method.

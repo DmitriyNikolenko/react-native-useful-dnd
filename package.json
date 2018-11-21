@@ -1,6 +1,6 @@
 {
   "name": "react-native-useful-dnd",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Drag&Drop for React Native",
   "main": "index.js",
   "scripts": {

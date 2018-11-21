@@ -4,26 +4,26 @@ import PropTypes from 'prop-types'
 import withDragContext from './withDragContext'
 import { isFunction, } from './helpers'
 
-class Droppable extends React.Component {
+class DropZone extends React.Component {
 	static propTypes = {
 		id: PropTypes.string.isRequired,
 		children: PropTypes.oneOfType([ PropTypes.node, PropTypes.func ]),
 		// From context
 		dropOver: PropTypes.bool,
-		registerDroppable: PropTypes.func.isRequired,
-		unregisterDroppable: PropTypes.func.isRequired,
+		registerDropZone: PropTypes.func.isRequired,
+		unregisterDropZone: PropTypes.func.isRequired,
 	}
 
 	ref = React.createRef()
 
 	componentDidMount = () => {
-		const { registerDroppable, id, } = this.props
-		registerDroppable(id, this.ref)
+		const { registerDropZone, id, } = this.props
+		registerDropZone(id, this.ref)
 	}
 
 	componentWillUnmount() {
-		const { unregisterDroppable, id, } = this.props
-		unregisterDroppable(id)
+		const { unregisterDropZone, id, } = this.props
+		unregisterDropZone(id)
 	}
 
 	// Render methods.
@@ -54,5 +54,5 @@ class Droppable extends React.Component {
 }
 
 export default withDragContext({
-	componentType: withDragContext.componentTypes.DROPPABLE,
-})(Droppable)
+	componentType: withDragContext.componentTypes.DROPZONE,
+})(DropZone)

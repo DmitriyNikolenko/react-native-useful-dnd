@@ -3,19 +3,19 @@ import DragContext from './DragContext'
 
 const componentTypes = Object.freeze({
 	DRAGGABLE: 'Draggable',
-	DROPPABLE: 'Droppable',
+	DROPZONE: 'DropZone',
 })
 
 const selectFavoriteDragState = {
 	[componentTypes.DRAGGABLE]: (componentId, dragState) => {
 		const active = componentId === dragState.activeDraggableId
-		const allowDrop = active && !!dragState.activeDroppableId
+		const allowDrop = active && !!dragState.activeDropZoneId
 
 		return { active, allowDrop, }
 	},
-	[componentTypes.DROPPABLE]: (componentId, dragState) => {
+	[componentTypes.DROPZONE]: (componentId, dragState) => {
 		return ({
-			dropOver: componentId === dragState.activeDroppableId,
+			dropOver: componentId === dragState.activeDropZoneId,
 		})
 	},
 }
